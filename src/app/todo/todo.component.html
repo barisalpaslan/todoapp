@@ -1,0 +1,70 @@
+<div class="container">
+  <div class="row">
+    <div class="col-5 mx-auto">
+      <h3 class="bg-primary text-white p-3">
+       {{getName()}}'ın  Listesi
+      </h3>
+
+      <div class="input-group mb-3">
+        <input
+          type="text" class="form-control"
+         (keyup.enter)="addItem()"
+         [(ngModel)]="inputText"
+         />
+        <button class="btn" (click)="addItem();"
+        [class] ="getBtnClasses()">
+        Add</button>
+      </div>
+
+      <!-- [class.disabled]="inputText.length == 0" -->
+
+      <div class="form-check mb-9">
+        <input type="checkbox" [(ngModel)]="displayAll" class="form-check-input" name="" id="displayAll" >
+        <label for="displayAll" class="form-check-label">Hepsini göster</label>
+      </div>
+
+      <div class="my-2">
+        {{ displayCount() }} görev tamamlandı.
+      </div>
+
+      <div class="alert alert-warning" *ngIf="getItems().length == 0 else itemsTable">
+        Listede Eleman yok.
+      </div>
+
+      <ng-template #itemsTable>
+
+        <table class="table table-bordered" *ngIf="getItems().length > 0">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Description</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of getItems(); let i = index;" [class]="{ 'bg-success' : item.action, 'bg-warning': !item.action}" >
+              <td>{{i+1}}</td>
+              <td>{{item.description}}</td>
+              <td>
+                <div [ngSwitch]="item.action">
+                  <div *ngSwitchCase="true">Yes</div>
+                  <div *ngSwitchDefault>No</div>
+                </div>
+              </td>
+              <td>
+                <input type="checkbox" (change)="onActionChanged(item)" [(ngModel)]="item.action" >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </ng-template>
+
+
+
+
+
+
+    </div>
+  </div>
+</div>
